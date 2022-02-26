@@ -10,22 +10,28 @@ const contactContent = "Scelerisque eleifend donec pretium vulputate sapien. Rho
 
 const app = express();
 const posts = [];
+let postTitle;
+let postBody;
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 app.get('/', function(req,res){
-  res.render('home',{homeStartingContent:homeStartingContent,aboutContent:aboutContent,contactContent:contactContent});
+  res.render('home',{
+    posts:posts,
+    postTitle:postTitle,
+    postBody:postBody
+  });
 })
 app.get('/about', function(req,res){
-  res.render('about',{homeStartingContent:homeStartingContent,aboutContent:aboutContent,contactContent:contactContent});
+  res.render('about',{aboutContent:aboutContent});
 })
 app.get('/contact', function(req,res){
-  res.render('contact',{homeStartingContent:homeStartingContent,aboutContent:aboutContent,contactContent:contactContent});
+  res.render('contact',{contactContent:contactContent});
 })
 app.get('/compose', function(req,res){
-   res.render('compose',{homeStartingContent:homeStartingContent,aboutContent:aboutContent,contactContent:contactContent});
+   res.render('compose',{});
 })
 
 // post route 
@@ -34,15 +40,15 @@ app.post('/', function(req,res){
 })
 
 app.post('/compose', function(req,res){
-  const postTitle = req.body.postTitle;
-  const postBody = req.body.postBody;
+  postTitle = req.body.postTitle;
+  postBody = req.body.postBody;
     const post = {
       title:postTitle,
       content : postBody 
       };
     posts.push(post);
-    console.log(typeof(posts));
-    console.log(posts);
+    // console.log(typeof(posts));
+    console.log(posts[0].title);
     res.redirect('/');
 })
 
